@@ -112,7 +112,7 @@ export function mensagemErroAuth(err) {
 
 // Configuração padrão do site (usada até o superadmin salvar a dele)
 export const CONFIG_PADRAO = {
-  nome: "DevFlix SaaS",
+  nome: "DEV Freelancer B2B",
   videoApresentacao: "HDfmEtZ5eM0",
   precoBasico: 197,
   precoBasicoDe: 297,

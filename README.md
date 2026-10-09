@@ -1,4 +1,4 @@
-# DevFlix SaaS – Plataforma de aulas
+# DEV Freelancer B2B – Plataforma de aulas
 
 Site de vendas + Superadmin + Área do aluno, usando **Firebase** (Authentication + Firestore).
 HTML, CSS e JavaScript puros, sem build.

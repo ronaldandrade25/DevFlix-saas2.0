@@ -1,7 +1,7 @@
 {
-  "name": "DevFlix SaaS",
-  "short_name": "DevFlix",
-  "description": "Área do aluno e painel da plataforma DevFlix SaaS.",
+  "name": "DEV Freelancer B2B",
+  "short_name": "DEV B2B",
+  "description": "Área do aluno e painel da plataforma DEV Freelancer B2B.",
   "lang": "pt-BR",
   "id": "./login.html",
   "start_url": "./login.html",

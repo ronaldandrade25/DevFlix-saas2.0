@@ -1,5 +1,5 @@
-// Service worker do app DevFlix: permite instalar o app e abrir offline
-const CACHE = "devflix-v1";
+// Service worker do app DEV Freelancer B2B: permite instalar o app e abrir offline
+const CACHE = "devfreelancer-v1";
 const BASICO = ["./login.html", "./css/plataforma.css", "./manifest.webmanifest", "./icons/icon-192.png"];
 
 self.addEventListener("install", (e) => {

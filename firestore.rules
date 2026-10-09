@@ -1,7 +1,7 @@
 rules_version = '2';
 
 // =====================================================================
-// REGRAS DE SEGURANÇA - DevFlix
+// REGRAS DE SEGURANÇA - DEV Freelancer B2B
 // Troque o e-mail abaixo pelo MESMO e-mail de js/firebase-config.js
 // (em letras minúsculas).
 // =====================================================================
