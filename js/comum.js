@@ -223,3 +223,20 @@ export function botaoWhatsapp(cfg) {
   }
   a.href = href;
 }
+
+// ===================== MENU LATERAL NO CELULAR =====================
+function ligarMenuMobile() {
+  const btn = document.getElementById("btnMenu");
+  const lateral = document.querySelector(".sidebar");
+  const fundo = document.getElementById("menuOverlay");
+  if (!btn || !lateral || !fundo) return;
+  const alternar = (abrir) => {
+    lateral.classList.toggle("aberto", abrir);
+    fundo.classList.toggle("aberto", abrir);
+  };
+  btn.addEventListener("click", () => alternar(!lateral.classList.contains("aberto")));
+  fundo.addEventListener("click", () => alternar(false));
+  lateral.addEventListener("click", (e) => { if (e.target.closest("button")) alternar(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") alternar(false); });
+}
+ligarMenuMobile();

@@ -24,7 +24,7 @@ if (!configurado) {
   $("#carregando").innerHTML = '<div class="empty">Configure o Firebase em <code>js/firebase-config.js</code>.<br/><br/><a class="btn btn-red btn-sm" href="index.html">Voltar ao site</a></div>';
 } else {
   onAuthStateChanged(auth, async (user) => {
-    if (!user) return (window.location.href = "index.html");
+    if (!user) return (window.location.href = "login.html");
     if (isAdminEmail(user.email)) return (window.location.href = "admin.html");
     try {
       await carregar(user);
@@ -37,7 +37,7 @@ if (!configurado) {
 
 $("#btnSair").addEventListener("click", async () => {
   await signOut(auth);
-  window.location.href = "index.html";
+  window.location.href = "login.html";
 });
 
 function bloquearTela(msg) {
@@ -45,7 +45,7 @@ function bloquearTela(msg) {
     <button class="btn btn-red btn-sm" id="sairBloqueado">Voltar ao site</button></div>`;
   $("#sairBloqueado").addEventListener("click", async () => {
     await signOut(auth);
-    window.location.href = "index.html";
+    window.location.href = "login.html";
   });
 }
 

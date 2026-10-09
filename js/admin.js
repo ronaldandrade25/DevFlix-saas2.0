@@ -38,7 +38,7 @@ if (!configurado) {
   $("#carregando").innerHTML = '<div class="empty">Configure o Firebase em <code>js/firebase-config.js</code>.<br/><br/><a class="btn btn-red btn-sm" href="index.html">Voltar ao site</a></div>';
 } else {
   onAuthStateChanged(auth, (user) => {
-    if (!user) return (window.location.href = "index.html");
+    if (!user) return (window.location.href = "login.html");
     if (!isAdminEmail(user.email)) return (window.location.href = "aluno.html");
     $("#adminEmail").textContent = user.email;
     iniciar();
@@ -47,7 +47,7 @@ if (!configurado) {
 
 $("#btnSair").addEventListener("click", async () => {
   await signOut(auth);
-  window.location.href = "index.html";
+  window.location.href = "login.html";
 });
 
 let iniciado = false;
