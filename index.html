@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>DevFlix SaaS</title>
+  <meta name="description" content="Aprenda a criar e vender sistemas de agendamento com Firebase." />
+  <meta name="theme-color" content="#ff1f1f" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="DevFlix" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/plataforma.css" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-container">
+      <a class="logo" href="#topo"><span class="logo-main">DEVFLIX</span><span class="logo-sub">SAAS</span></a>
+      <nav class="nav">
+        <a href="#conteudo">Conteúdo</a>
+        <a href="#aulas">Aulas</a>
+        <a href="#planos">Planos</a>
+        <a href="#depoimentos">Depoimentos</a>
+        <a href="#faq">Dúvidas</a>
+      </nav>
+      <div class="header-actions">
+        <a href="#planos" class="btn btn-outline btn-sm">Quero me inscrever</a>
+        <button class="btn btn-outline btn-sm hidden" data-instalar type="button"><i class="fa-solid fa-mobile-screen"></i> <span>Instalar app</span></button>
+        <button class="btn btn-red btn-sm" id="btnEntrar"><i class="fa-solid fa-right-to-bracket"></i> <span>Entrar</span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="topo">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-badge">FORMAÇÃO DEVFLIX SAAS</div>
+        <h1><span id="heroPrefixo" class="plain">Crie e venda</span> <span id="heroDestaque">sistemas de agendamento</span> <span id="heroSufixo" class="plain">do zero</span></h1>
+        <p id="heroDescricao">Aprenda a construir SaaS completos para barbearias, pet shops e salões de beleza, com Firebase, painel administrativo e estratégias para fechar clientes.</p>
+        <div class="hero-buttons">
+          <a href="#planos" class="btn btn-red btn-lg"><i class="fa-solid fa-bolt"></i> Garantir minha vaga</a>
+          <button class="btn btn-outline btn-lg" data-open-login><i class="fa-solid fa-user"></i> Já sou aluno</button>
+        </div>
+        <div class="hero-stats">
+          <div><strong id="statAulas">+7</strong><small>aulas práticas</small></div>
+          <div><strong>4</strong><small>sistemas prontos</small></div>
+          <div><strong>7 dias</strong><small>de garantia</small></div>
+        </div>
+      </div>
+      <div class="hero-video">
+        <div id="heroVideo" style="width:100%;height:100%"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFÍCIOS -->
+  <section class="block" id="conteudo">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">O QUE VOCÊ RECEBE</span>
+        <h2>Tudo para sair do zero ao primeiro cliente</h2>
+        <p>Conteúdo direto ao ponto, com código-fonte, suporte e acompanhamento.</p>
+      </div>
+      <div class="benefits">
+        <div class="benefit"><i class="fa-solid fa-play"></i><h3>Aulas gravadas</h3><p>Assista no seu ritmo pela área do aluno, no computador ou no celular.</p></div>
+        <div class="benefit"><i class="fa-solid fa-file-zipper"></i><h3>Código-fonte</h3><p>Downloads dos sites e painéis ADM prontos para adaptar e vender.</p></div>
+        <div class="benefit"><i class="fa-brands fa-whatsapp"></i><h3>Suporte</h3><p>Grupo com suporte para tirar dúvidas durante o curso.</p></div>
+        <div class="benefit"><i class="fa-solid fa-chart-line"></i><h3>Seu progresso</h3><p>Acompanhe as aulas concluídas e continue de onde parou.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AULAS (vêm do Firestore: coleção "vitrine") -->
+  <section class="block" id="aulas" style="background: var(--bg-secondary)">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">GRADE DO CURSO</span>
+        <h2>O que você vai aprender</h2>
+        <p>As aulas com selo <strong>GRÁTIS</strong> você pode assistir agora mesmo.</p>
+      </div>
+      <div class="modules" id="gradeAulas"><div class="empty" style="grid-column: 1/-1">Carregando aulas...</div></div>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section class="block" id="planos">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">PLANOS</span>
+        <h2>Escolha seu acesso</h2>
+        <p>Pagamento único, sem mensalidade.</p>
+      </div>
+      <div class="pricing" id="listaPlanos"><div class="empty">Carregando planos...</div></div>
+    </div>
+  </section>
+
+  <!-- DEPOIMENTOS -->
+  <section class="block" id="depoimentos" style="background: var(--bg-secondary)">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">DEPOIMENTOS</span><h2>Quem já fez</h2></div>
+      <div class="testimonials">
+        <div class="testimonial"><div class="stars">★★★★★</div><p>A DevFlix me ajudou a organizar melhor meu projeto, entender a estrutura do sistema e acelerar meu desenvolvimento com mais clareza nas aulas.</p><strong>João Pedro</strong><small>Sistema para Barbearia</small></div>
+        <div class="testimonial"><div class="stars">★★★★★</div><p>A DevFlix me ajudou a tirar o projeto do papel, entender melhor HTML, CSS e JavaScript na prática e montar algo mais profissional.</p><strong>Mariana Souza</strong><small>Sistema para Salão de Beleza</small></div>
+        <div class="testimonial"><div class="stars">★★★★★</div><p>A DevFlix me ajudou a entender como estruturar as telas, melhorar o visual do projeto e evoluir mais rápido com base nas aulas.</p><strong>Carlos Henrique</strong><small>Sistema para Petshop</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section class="block" id="sobre">
+    <div class="container about-grid">
+      <div>
+        <div class="section-head" style="text-align: left; margin: 0 0 20px"><span class="eyebrow">SOBRE</span><h2>Quem ensina</h2></div>
+        <div id="textoProfessor"></div>
+        <a class="btn btn-green" id="linkSuporte" href="https://chat.whatsapp.com/JPX8TaZEtibIY6xQcti2Dx" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Falar com o suporte</a>
+      </div>
+      <div class="teacher-card">
+        <div class="teacher-foto" id="fotoProfessor"><i class="fa-solid fa-user"></i></div>
+        <div><h3 id="nomeProfessor"></h3><span id="cargoProfessor"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block" id="faq" style="background: var(--bg-secondary)">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow">DÚVIDAS</span><h2>Perguntas frequentes</h2></div>
+      <div class="faq">
+        <details><summary>Como acesso as aulas depois da compra?</summary><p>Você recebe um e-mail para criar sua senha. Depois é só clicar em "Entrar" no topo do site com o e-mail da compra.</p></details>
+        <details><summary>Preciso saber programar?</summary><p>Não. As aulas começam do zero e mostram o passo a passo.</p></details>
+        <details><summary>Por quanto tempo tenho acesso?</summary><p>O plano Completo tem acesso vitalício. O prazo do plano Básico é informado na compra.</p></details>
+        <details><summary>Tem garantia?</summary><p>Sim, 7 dias de garantia incondicional.</p></details>
+        <details><summary>Esqueci minha senha, e agora?</summary><p>Clique em "Entrar", digite seu e-mail e use "Esqueci minha senha". Você recebe um link para criar uma nova.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="container">
+      <div class="cta-final">
+        <h2>Comece hoje a construir seu primeiro SaaS</h2>
+        <p>Acesso à área do aluno logo após a confirmação do pagamento.</p>
+        <a href="#planos" class="btn btn-red btn-lg">Quero minha vaga</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>© <span id="ano"></span> DevFlix SaaS · Todos os direitos reservados</footer>
+
+  <!-- MODAL DE LOGIN -->
+  <div class="modal" id="loginModal">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-content">
+      <button class="icon-btn modal-close" data-close-modal aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+      <div class="logo" style="margin-bottom: 22px"><span class="logo-main">DEVFLIX</span><span class="logo-sub">SAAS</span></div>
+      <h3>Entrar na plataforma</h3>
+      <p class="sub">Use o e-mail cadastrado na sua compra.</p>
+      <form id="loginForm">
+        <div class="field" style="margin-bottom: 14px"><label for="loginEmail">E-mail</label><input type="email" id="loginEmail" required autocomplete="email" placeholder="seuemail@exemplo.com" /></div>
+        <div class="field"><label for="loginSenha">Senha</label><input type="password" id="loginSenha" required autocomplete="current-password" placeholder="••••••••" /></div>
+        <div class="form-error" id="loginErro"></div>
+        <button class="btn btn-red" style="width: 100%; margin-top: 8px" type="submit" id="loginBtn">Entrar</button>
+      </form>
+      <p style="text-align: center; margin-top: 14px"><button class="link-btn" id="esqueciSenha" type="button">Esqueci minha senha / primeiro acesso</button></p>
+    </div>
+  </div>
+
+  <!-- MODAL DE AULA GRÁTIS -->
+  <div class="modal" id="aulaGratisModal">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-content video">
+      <button class="icon-btn modal-close" data-close-modal aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+      <div class="player-frame" id="aulaGratisFrame"></div>
+      <div class="player-info">
+        <div><span class="eyebrow">AULA GRÁTIS</span><h3 id="aulaGratisTitulo"></h3><p id="aulaGratisDesc"></p></div>
+        <div class="actions"><a href="#planos" class="btn btn-red btn-sm" data-close-modal>Quero o curso completo</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/vendas.js"></script>
+</body>
+</html>

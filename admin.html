@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex" />
+  <title>Superadmin · DevFlix</title>
+  <meta name="theme-color" content="#ff1f1f" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="DevFlix" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/plataforma.css" />
+</head>
+<body>
+  <div class="tela-carregando" id="carregando"><div class="spinner"></div>Verificando acesso...</div>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo"><span class="logo-main">DEVFLIX</span><span class="logo-sub">SAAS</span></div>
+      <div class="role">SUPERADMIN</div>
+      <nav class="side-nav" id="adminNav">
+        <button data-page="dashboard" class="active"><i class="fa-solid fa-gauge"></i> Dashboard</button>
+        <button data-page="aulas"><i class="fa-solid fa-circle-play"></i> Aulas</button>
+        <button data-page="alunos"><i class="fa-solid fa-users"></i> Alunos</button>
+        <button data-page="materiais"><i class="fa-solid fa-folder-open"></i> Materiais</button>
+        <button data-page="gestao"><i class="fa-solid fa-list-check"></i> Gestão</button>
+        <button data-page="financeiro"><i class="fa-solid fa-sack-dollar"></i> Financeiro</button>
+        <button data-page="config"><i class="fa-solid fa-gear"></i> Configurações</button>
+      </nav>
+      <div class="side-user">
+        <div class="avatar">SA</div>
+        <div class="info"><strong>Superadmin</strong><small id="adminEmail"></small></div>
+        <button class="icon-btn" id="btnSair" title="Sair" aria-label="Sair"><i class="fa-solid fa-right-from-bracket"></i></button>
+      </div>
+    </aside>
+    <main class="main" id="adminMain"></main>
+  </div>
+
+  <!-- Modal de formulários -->
+  <div class="modal" id="formModal">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-content wide">
+      <button class="icon-btn modal-close" data-close-modal aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+      <div id="formModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Modal para assistir a aula -->
+  <div class="modal" id="playerModal">
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="modal-content video">
+      <button class="icon-btn modal-close" data-close-modal aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button>
+      <div class="player-frame" id="playerFrame"></div>
+      <div class="player-info"><div><span class="eyebrow" id="playerModulo"></span><h3 id="playerTitulo"></h3><p id="playerDesc"></p></div></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>

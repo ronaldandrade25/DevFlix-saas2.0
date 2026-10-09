@@ -1,0 +1,83 @@
+rules_version = '2';
+
+// =====================================================================
+// REGRAS DE SEGURANÇA - DevFlix
+// Troque o e-mail abaixo pelo MESMO e-mail de js/firebase-config.js
+// (em letras minúsculas).
+// =====================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function logado() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return logado() && request.auth.token.email == 'rasistema25@gmail.com';
+    }
+
+    function alunoAtual() {
+      return get(/databases/$(database)/documents/alunos/$(request.auth.uid)).data;
+    }
+
+    // Plano com acesso a todas as aulas (campo gravado no cadastro do aluno;
+    // alunos antigos: o plano "completo")
+    function acessoTotal() {
+      return alunoAtual().get('acessoTotal', alunoAtual().plano == 'completo') == true;
+    }
+
+    function alunoAtivo() {
+      return logado()
+        && exists(/databases/$(database)/documents/alunos/$(request.auth.uid))
+        && alunoAtual().status == 'ativo';
+    }
+
+    // Configurações do site (preços, módulos, links): todos leem, só o admin altera
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Vitrine: versão pública das aulas, usada no site de vendas (sem o vídeo das aulas pagas)
+    match /vitrine/{aulaId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Aulas completas (com o código do YouTube): só alunos ativos, respeitando o plano
+    match /aulas/{aulaId} {
+      allow read: if isAdmin()
+        || (alunoAtivo()
+            && resource.data.status == 'publicada'
+            && (acessoTotal()
+                || resource.data.plano == 'todos'
+                || resource.data.gratuita == true));
+      allow write: if isAdmin();
+    }
+
+    // Materiais de apoio: alunos ativos, respeitando o plano
+    match /materiais/{id} {
+      allow read: if isAdmin()
+        || (alunoAtivo()
+            && resource.data.status == 'publicada'
+            && (acessoTotal() || resource.data.plano == 'todos'));
+      allow write: if isAdmin();
+    }
+
+    // Alunos: cada aluno lê só o próprio cadastro e só pode mudar o próprio progresso
+    match /alunos/{alunoId} {
+      allow read: if isAdmin() || (logado() && request.auth.uid == alunoId);
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin()
+        || (logado()
+            && request.auth.uid == alunoId
+            && resource.data.status == 'ativo'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['progresso', 'ultimoAcesso']));
+    }
+
+    // Financeiro: somente o superadmin
+    match /lancamentos/{id} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
