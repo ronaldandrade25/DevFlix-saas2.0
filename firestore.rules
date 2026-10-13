@@ -55,6 +55,18 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Códigos dos vídeos: o aluno lê UM documento por vez (get), nunca a lista inteira.
+    // Assim o código não vem junto com a lista de aulas.
+    match /videos/{aulaId} {
+      allow get: if isAdmin()
+        || (alunoAtivo()
+            && resource.data.status == 'publicada'
+            && (acessoTotal()
+                || resource.data.plano == 'todos'
+                || resource.data.gratuita == true));
+      allow list, write: if isAdmin();
+    }
+
     // Materiais de apoio: alunos ativos, respeitando o plano
     match /materiais/{id} {
       allow read: if isAdmin()

@@ -218,8 +218,9 @@ O `firebase.json` já publica a pasta raiz, ignora arquivos que não devem ir ao
 | Coleção | Conteúdo |
 |---|---|
 | `config/site` | nome, preços, links de checkout, WhatsApp, suporte, vídeo de apresentação, lista de módulos, planos, cores |
-| `aulas/{id}` | título, código do YouTube, módulo, ordem, duração, descrição, materiais, plano, status, grátis |
+| `aulas/{id}` | título, módulo, ordem, duração, descrição, materiais, plano, status, grátis |
 | `materiais/{id}` | nome, link, descrição, categoria, plano, status |
+| `videos/{id}` | código do YouTube da aula + plano/status/grátis (o aluno só lê um documento por vez, ao abrir a aula; nunca a lista) |
 | `vitrine/{id}` | cópia pública da aula para o site de vendas (só tem o vídeo se a aula for grátis) |
 | `alunos/{uid}` | nome, e-mail, WhatsApp, CPF, plano, valor, pagamento, status, matrícula, validade, observações, progresso, último acesso |
 | `lancamentos/{id}` | data, tipo (entrada/saída), descrição, categoria, valor, forma, status, aluno |
@@ -229,6 +230,7 @@ O `firebase.json` já publica a pasta raiz, ignora arquivos que não devem ir ao
 | Coleção | Leitura | Escrita |
 |---|---|---|
 | `config`, `vitrine` | Qualquer pessoa | Só superadmin |
+| `videos` | Superadmin; aluno ativo só por id (`get`), nunca listando | Só superadmin |
 | `aulas`, `materiais` | Superadmin; aluno **ativo**, aula **publicada** e dentro do plano (ou grátis) | Só superadmin |
 | `alunos` | Superadmin; o próprio aluno | Superadmin; o aluno ativo só altera `progresso` e `ultimoAcesso` |
 | `lancamentos` | Só superadmin | Só superadmin |

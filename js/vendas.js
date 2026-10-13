@@ -40,7 +40,8 @@ function renderSite() {
     heroAtual?.player.destruir();
     const id = config.videoApresentacao;
     heroAtual = { id, player: { destruir() {} } };
-    abrirVideo($("#heroVideo"), id, { autoplay: false }).then((p) => (heroAtual = { id, player: p }));
+    if (id) abrirVideo($("#heroVideo"), id, { autoplay: false }).then((p) => (heroAtual = { id, player: p }));
+    else $("#heroVideo").innerHTML = "";
   }
   aplicarTema(config);
   botaoWhatsapp(config);

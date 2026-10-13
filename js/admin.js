@@ -57,7 +57,7 @@ function iniciar() {
   const pronto = new Set();
   const marcar = (nome) => {
     pronto.add(nome);
-    if (pronto.size >= 5) $("#carregando").classList.add("hidden");
+    if (pronto.size >= 6) $("#carregando").classList.add("hidden");
     render();
   };
   const erro = (e) => {
@@ -66,7 +66,21 @@ function iniciar() {
     $("#carregando").classList.add("hidden");
   };
   onSnapshot(doc(db, "config", "site"), (s) => { config = { ...CONFIG_PADRAO, ...(s.data() || {}) }; aplicarPlanos(config); aplicarTema(config); marcar("config"); }, erro);
-  onSnapshot(collection(db, "aulas"), (s) => { aulas = s.docs.map((d) => ({ id: d.id, ...d.data() })); marcar("aulas"); }, erro);
+  // O código do vídeo fica na coleção "videos" (o aluno só lê por id); aqui o admin junta os dois.
+  let aulasBrutas = [];
+  let videos = new Map();
+  const juntarAulas = () => { aulas = aulasBrutas.map((a) => ({ ...a, yt: videos.get(a.id) || a.yt || "" })); };
+  onSnapshot(collection(db, "aulas"), (s) => {
+    aulasBrutas = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+    juntarAulas();
+    marcar("aulas");
+    migrarVideosAntigos(aulasBrutas);
+  }, erro);
+  onSnapshot(collection(db, "videos"), (s) => {
+    videos = new Map(s.docs.map((d) => [d.id, d.data().yt]));
+    juntarAulas();
+    marcar("videos");
+  }, erro);
   onSnapshot(collection(db, "alunos"), (s) => { todosAlunos = s.docs.map((d) => ({ id: d.id, ...d.data() })); marcar("alunos"); }, erro);
   onSnapshot(collection(db, "materiais"), (s) => { materiais = s.docs.map((d) => ({ id: d.id, ...d.data() })); marcar("materiais"); }, erro);
   onSnapshot(collection(db, "lancamentos"), (s) => { lancamentos = s.docs.map((d) => ({ id: d.id, ...d.data() })); marcar("lancamentos"); }, erro);
@@ -442,7 +456,7 @@ function ligarEventosPagina() {
       await salvar(
         () => setDoc(doc(db, "config", "site"), {
           ...fd,
-          videoApresentacao: extractYoutubeId(fd.videoApresentacao) || config.videoApresentacao,
+          videoApresentacao: extractYoutubeId(fd.videoApresentacao) || "",
         }, { merge: true }),
         "Configurações salvas"
       );
@@ -476,11 +490,36 @@ function dadosVitrine(a) {
   return { titulo: a.titulo, modulo: a.modulo, ordem: a.ordem, duracao: a.duracao || "", descricao: a.descricao || "", gratuita: !!a.gratuita, plano: a.plano || "todos", status: a.status, yt: a.gratuita ? a.yt : "" };
 }
 
+// O código do YouTube não fica no documento da aula (que vai inteiro na lista do aluno):
+// vai para "videos/{id}", que o aluno só consegue ler pelo id, ao abrir a aula.
+const dadosVideo = (a) => ({ yt: a.yt, plano: a.plano || "todos", gratuita: !!a.gratuita, status: a.status });
+
 async function gravarAula(id, dados) {
+  const { yt, ...aula } = dados;
   const batch = writeBatch(db);
-  batch.set(doc(db, "aulas", id), dados);
+  batch.set(doc(db, "aulas", id), aula);
+  batch.set(doc(db, "videos", id), dadosVideo(dados));
   batch.set(doc(db, "vitrine", id), dadosVitrine(dados));
   await batch.commit();
+}
+
+// Aulas cadastradas antes: move o código para "videos" e tira do documento da aula
+const migrando = new Set();
+async function migrarVideosAntigos(lista) {
+  for (const a of lista) {
+    if (!a.yt || migrando.has(a.id)) continue;
+    migrando.add(a.id);
+    try {
+      const { id, yt, ...aula } = a;
+      const batch = writeBatch(db);
+      batch.set(doc(db, "videos", id), dadosVideo(a));
+      batch.set(doc(db, "aulas", id), aula);
+      await batch.commit();
+    } catch (e) {
+      console.error(e);
+      migrando.delete(a.id);
+    }
+  }
 }
 
 function formAula(a = {}) {
@@ -837,6 +876,7 @@ document.addEventListener("click", async (e) => {
       return salvar(async () => {
         const batch = writeBatch(db);
         batch.delete(doc(db, "aulas", id));
+        batch.delete(doc(db, "videos", id));
         batch.delete(doc(db, "vitrine", id));
         await batch.commit();
       }, "Aula excluída");

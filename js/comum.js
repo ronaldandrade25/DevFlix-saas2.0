@@ -113,7 +113,7 @@ export function mensagemErroAuth(err) {
 // Configuração padrão do site (usada até o superadmin salvar a dele)
 export const CONFIG_PADRAO = {
   nome: "DEV Freelancer B2B",
-  videoApresentacao: "HDfmEtZ5eM0",
+  videoApresentacao: "",
   precoBasico: 197,
   precoBasicoDe: 297,
   precoCompleto: 397,

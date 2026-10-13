@@ -155,7 +155,7 @@ function render() {
 
 const cardAula = (a, i) => `
   <button class="lesson-card" data-play="${a.id}">
-    <div class="thumb" style="background-image:url('${thumb(a.yt)}')">
+    <div class="thumb thumb-placeholder">
       ${concluida(a.id) ? '<span class="done"><i class="fa-solid fa-check"></i> Concluída</span>' : ""}
       ${a.duracao ? `<span class="dur">${esc(a.duracao)}</span>` : ""}
     </div>
@@ -174,7 +174,7 @@ function pgInicio() {
   return `
   <div class="page-head"><div><h1>Olá, ${esc(aluno.nome.split(" ")[0])} 👋</h1><p>${feitas ? "Continue de onde parou" : "Bem-vindo(a)! Comece pela primeira aula"}</p></div></div>
   ${proxima ? `<div class="continue">
-    <div class="thumb" style="background-image:url('${thumb(proxima.yt)}')" data-play="${proxima.id}"></div>
+    <div class="thumb thumb-placeholder" data-play="${proxima.id}"></div>
     <div class="info">
       <span class="eyebrow">${feitas === aulas.length ? "CURSO CONCLUÍDO · REVER" : "PRÓXIMA AULA"} · ${esc(proxima.modulo.toUpperCase())}</span>
       <h2>${esc(proxima.titulo)}</h2><p>${esc(proxima.descricao)}</p>
@@ -261,7 +261,19 @@ async function abrirPlayer(aula) {
   abrirModal("#playerModal");
 
   destruirPlayer();
-  const p = await abrirVideo($("#playerFrame"), aula.yt, {
+  // O código do vídeo só é pedido ao abrir a aula (as regras conferem plano e status)
+  let yt = "";
+  try {
+    yt = (await getDoc(doc(db, "videos", aula.id))).data()?.yt || "";
+  } catch (e) {
+    console.error(e);
+  }
+  if (aulaAtual !== aula) return;
+  if (!yt) {
+    $("#playerFrame").innerHTML = '<div class="empty" style="padding:40px">Não foi possível carregar o vídeo.</div>';
+    return;
+  }
+  const p = await abrirVideo($("#playerFrame"), yt, {
     // Marca como concluída automaticamente quando o vídeo termina
     aoTerminar: () => {
       if (aulaAtual === aula && !concluida(aula.id)) marcarConcluida(aula).then(renderAcoesPlayer);
